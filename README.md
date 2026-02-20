@@ -35,7 +35,7 @@ Launch the application:<br>
 node websocket-server-write-to-file
 ```
 
-Default local (not public!) of this application server `port` is: 8000.
+Default local (not public!) of this application server `port` is: 6000.
 
 
 
