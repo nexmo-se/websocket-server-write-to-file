@@ -1,9 +1,5 @@
 # WebSocket server - Write received text streaming to file
 
-## About this Connector code
-
-This connector makes use of the WebSockets feature of [Vonage Voice API](https://developer.vonage.com/en/voice/voice-api/concepts/websockets).
-
 ## Set up
 
 ### Folder
