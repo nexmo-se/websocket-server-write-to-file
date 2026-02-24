@@ -28,19 +28,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-// //-- Backtrack audio payload handling --
-
-// const circularBuffer = require("circular-buffer");
-
-// // circular buffer size
-// const cbLength = Math.round(process.env.BACKTRACK_PAYLOAD_DURATION / 20);
-
-// //--- Record all audio ? --
-
-// let recordAllAudio = false;
-// if (process.env.RECORD_ALL_AUDIO == "true") { recordAllAudio = true };
-
-//-------------------------
+//--
 
 // ONLY if needed - For self-signed certificate in chain - In test environment
 // Must leave next line as a comment in production environment
@@ -109,8 +97,7 @@ app.ws('/socket', async (ws, req) => {
         }    
 
         // msgCount++;
-        // console.log('Messages count:', msgCount);
-    
+        // console.log('Messages count:', msgCount);  
 
       }
     
