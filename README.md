@@ -10,7 +10,7 @@ Make sure there is a folder named "recordings" where the log files will be creat
 
 For a `local deployment`:</br>
 - If your client application server host is on the Internet, to be able to establish a WebSocket to this server application host, you may use ngrok (an Internet tunneling service) with this WebSocket server application with [an ngrok tunnel](https://ngrok.com/docs/agent/config/v2/#tunnel-configurations).</br>
-- If your client application server host that establishes the WebSocket and this application server host are both on the same local network, there is no need to use ngrok. This application will be listening on its server host IP address and TCP port 6000 for incoming WebSocket connections.</br>
+- If your client application server host that establishes the WebSocket and this application server host are both on the same local network, there is no need to use ngrok. This application will be listening on its server host IP address and TCP port 6000 for incoming WebSocket connections. _(Skip to "Running this application")_</br>
 
 
 To use ngrok, [download and install ngrok](https://ngrok.com/download).</br>
