@@ -40,12 +40,90 @@ app.ws('/socket', async (ws, req) => {
 
   console.log('>>> WebSocket established');
 
-  let fileName = null;
+  // //--- Using a different log file name for each new video session ---
 
-  let msgCount = 0;
-  let firstMessage = true;
+  // let fullPathFileName = null;
 
-  //---------------
+  // let msgCount = 0;
+  // let firstMessage = true;
+
+  // ws.on('message', async (msg) => {
+    
+  //   if (typeof msg === "string") {
+    
+  //     // console.log("\n>>> Websocket text message - raw :", msg);
+
+  //     const sessionId = JSON.parse(msg).sessionId;
+
+  //     if (!fullPathFileName) {
+
+  //       console.log('sessionId:', sessionId);
+
+  //       fullPathFileName = path.join('recordings', moment(Date.now()).format('YYYY-MM-DD_HH-mm-ss-SSS') + '_' + sessionId + '.txt'); // using server local time
+  //       // fullPathFileName = path.join('recordings', moment.utc(Date.now()).format('YYYY-MM-DD_HH-mm-ss-SSS') + '_' + sessionId + '.txt'); // using UTC
+
+  //       try {
+  //         await fsp.writeFile(fullPathFileName, '');
+  //       } catch(e) {
+  //         console.log('>>> Error creating file', fullPathFileName, e);
+  //       }
+
+  //       try {
+  //         fsp.appendFile(fullPathFileName, "[");
+  //       } catch(error) {
+  //         console.log(">>> Error writing to file", fullPathFileName, error);
+  //       }
+
+  //     } else {
+
+  //       if (firstMessage) {
+
+  //         try {
+  //             fsp.appendFile(fullPathFileName, msg);
+  //           } catch(error) {
+  //             console.log(">>> Error writing to file", fullPathFileName, error);
+  //           }
+
+  //         firstMessage = false;   
+
+  //       } else {
+
+  //         try {
+  //           fsp.appendFile(fullPathFileName, "," + msg);
+  //         } catch(error) {
+  //           console.log(">>> Error writing to file", fullPathFileName, error);
+  //         }
+
+  //       }    
+
+  //       // msgCount++;
+  //       // console.log('Messages count:', msgCount);  
+
+  //     }
+    
+  //   } else {
+
+  //     console.log("\n>>> Websocket binary message:", msg);
+
+  //   }
+
+  // });
+
+  //--- Using the same log file name for all video sessions ---
+
+  const fileName = 'log-file.txt';
+  const fullPathFileName = path.join('recordings', fileName);
+  // let msgCount = 0;
+
+  // //- create file if it does not yet exist
+  // try {
+  //   console.log('>>> Trying to create file', fullPathFileName, e);
+  //   await fsp.writeFile(fullPathFileName, '');
+  // } catch(e) {
+  //   console.log('>>> Error creating file', fullPathFileName, e);
+  // }
+
+  //-
 
   ws.on('message', async (msg) => {
     
@@ -53,53 +131,15 @@ app.ws('/socket', async (ws, req) => {
     
       // console.log("\n>>> Websocket text message - raw :", msg);
 
-      const sessionId = JSON.parse(msg).sessionId;
-
-      if (!fileName) {
-
-        console.log('sessionId:', sessionId);
-
-        fileName = path.join('recordings', moment(Date.now()).format('YYYY-MM-DD_HH-mm-ss-SSS') + '_' + sessionId + '.txt'); // using server local time
-        // fileName = path.join('recordings', moment.utc(Date.now()).format('YYYY-MM-DD_HH-mm-ss-SSS') + '_' + sessionId + '.txt'); // using UTC
-
-        try {
-          await fsp.writeFile(fileName, '');
-        } catch(e) {
-          console.log('>>> Error creating file', fileName, e);
-        }
-
-        try {
-          fsp.appendFile(fileName, "[");
-        } catch(error) {
-          console.log(">>> Error writing to file", fileName, error);
-        }
-
-      } else {
-
-        if (firstMessage) {
-
-          try {
-              fsp.appendFile(fileName, msg);
-            } catch(error) {
-              console.log(">>> Error writing to file", fileName, error);
-            }
-
-          firstMessage = false;   
-
-        } else {
-
-          try {
-            fsp.appendFile(fileName, "," + msg);
-          } catch(error) {
-            console.log(">>> Error writing to file", fileName, error);
-          }
-
-        }    
-
-        // msgCount++;
-        // console.log('Messages count:', msgCount);  
-
+      try {
+        fsp.appendFile(fullPathFileName, JSON.stringify(JSON.parse(msg), null, 2) +
+         '\n--------------------------------------------------------\n');
+      } catch(error) {
+        console.log(">>> Error writing to file", fullPathFileName, error);
       }
+
+      // msgCount++;
+      // console.log('Messages count:', msgCount);  
     
     } else {
 
@@ -109,15 +149,10 @@ app.ws('/socket', async (ws, req) => {
 
   });
 
-  //--
+
+  //----
 
   ws.on('close', async () => {
-
-    try {
-      fsp.appendFile(fileName, "]");
-    } catch(error) {
-      console.log(">>> Error writing to file", fileName, error);
-    }
 
     console.log("WebSocket closed");
     
